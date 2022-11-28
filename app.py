@@ -48,5 +48,30 @@ def request_tokens():
     return 'Authorization flow complete'
 
 
+@app.route('/get_artists')
+def get_artists():
+    pass
+
+
+@app.route('/get_albums')
+def get_albums():
+    pass
+
+
+@app.route('/get_tracks')
+def get_tracks():
+    pass
+
+
+@app.route('/create_playlist')
+def create_playlist():
+    pass
+
+
+@app.route('/add_to_playlist')
+def add_to_playlist():
+    pass
+
+
 if __name__ == '__main__':
     app.run()
