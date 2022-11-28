@@ -1,0 +1,4 @@
+SPOTIFY_CLIENT_ID='xxxxxxxxxx'
+SPOTIFY_CLIENT_SECRET='xxxxxxxxxx'
+SPOTIFY_USER_ID='xxxxxxxxxx'
+SPOTIFY_REDIRECT_URI='http://127.0.0.1:5000/callback'
