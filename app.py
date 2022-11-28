@@ -11,6 +11,7 @@ CLIENT_SECRET = os.getenv('SPOTIFY_CLIENT_SECRET')
 REDIRECT_URI = os.getenv('SPOTIFY_REDIRECT_URI')
 
 SPOTIFY_TOKEN_URL = 'https://accounts.spotify.com/api/token'
+MY_FOLLOWED_ARTISTS_URL = 'https://api.spotify.com/v1/me/following?type=artist'
 
 app = Flask(__name__)
 
@@ -45,12 +46,34 @@ def request_tokens():
     with open('tokens.json', 'w') as outfile:
         json.dump(tokens, outfile)
 
-    return 'Authorization flow complete'
+    return redirect('/get_artists')
 
 
 @app.route('/get_artists')
 def get_artists():
-    pass
+
+    with open('tokens.json', 'r') as openfile:
+        tokens = json.load(openfile)
+
+    headers = {'Authorization': f'Bearer {tokens["access_token"]}'}
+
+    r = requests.get(MY_FOLLOWED_ARTISTS_URL, headers=headers)
+    response = r.json()
+
+    artists_ids = []
+    artists = response['artists']['items']
+
+    for artist in artists:
+        artists_ids.append(artist['id'])
+
+    while response['artists']['next']:
+        next_page_uri = response['artists']['next']
+        r = requests.get(next_page_uri, headers=headers)
+        response = r.json()
+        for artist in response['artists']['items']:
+            artists_ids.append(artist['id'])
+
+    return str(artists_ids)
 
 
 @app.route('/get_albums')
